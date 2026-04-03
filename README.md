@@ -36,11 +36,6 @@ ChatBot Pro Dashboard is a web-based automation system designed to manage and au
 
 ---
 
-## 📷 Project Preview
-
-(Add screenshots here — you can upload images to GitHub and paste links)
-
----
 
 ## ⚙️ Installation & Setup
 
