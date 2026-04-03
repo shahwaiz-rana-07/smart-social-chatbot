@@ -1,0 +1,44 @@
+# Database Configuration
+DATABASE_URL=sqlite:///./xerochat.db
+REDIS_URL=redis://localhost:6379
+
+# JWT Configuration
+SECRET_KEY=your-super-secret-jwt-key-here-change-this-in-production
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+# Facebook/Instagram API Configuration
+FACEBOOK_APP_ID=your_facebook_app_id
+FACEBOOK_APP_SECRET=your_facebook_app_secret
+FACEBOOK_VERIFY_TOKEN=your_facebook_verify_token
+FACEBOOK_ACCESS_TOKEN=your_facebook_page_access_token
+FACEBOOK_PAGE_ID=your_facebook_page_id
+FACEBOOK_ID=your_facebook_user_id
+
+INSTAGRAM_APP_ID=your_instagram_app_id
+INSTAGRAM_APP_SECRET=your_instagram_app_secret
+VERIFY_TOKEN=your_instagram_verify_token
+ACCESS_TOKEN=your_instagram_access_token
+INSTAGRAM_ID=your_instagram_business_id
+
+# OpenAI Configuration (for AI features)
+OPENAI_API_KEY=your_openai_api_key
+
+# Stripe Configuration (for payments)
+STRIPE_PUBLIC_KEY=your_stripe_public_key
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
+
+# Email Configuration
+SMTP_SERVER=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USERNAME=your_email@gmail.com
+SMTP_PASSWORD=your_app_password
+
+# Application Settings
+APP_NAME=XeroChat Pro
+APP_URL=http://localhost:8000
+ADMIN_EMAIL=admin@xerochat.com
+
+# Ngrok Configuration (for webhook testing)
+NGROK_AUTH_TOKEN=your_ngrok_auth_token

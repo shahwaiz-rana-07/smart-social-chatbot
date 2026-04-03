@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XeroChat Pro - Complete Messenger Marketing Software</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        'primary': '#6366f1',
+                        'primary-dark': '#4f46e5',
+                        'secondary': '#f59e0b',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444',
+                        'dark-bg': '#0f172a',
+                        'card-bg': '#1e293b',
+                        'border-color': '#334155'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark-bg font-sans min-h-screen text-white">
+    <!-- Navigation -->
+    <nav class="bg-card-bg border-b border-border-color px-6 py-4">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                    <i data-lucide="message-square" class="w-5 h-5 text-white"></i>
+                </div>
+                <h1 class="text-xl font-bold">XeroChat Pro</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span id="userInfo" class="text-sm text-gray-400"></span>
+                <button onclick="logout()" class="text-sm text-red-400 hover:text-red-300">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-card-bg min-h-screen border-r border-border-color">
+            <nav class="p-4 space-y-2">
+                <a href="#" onclick="showSection('dashboard')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-primary/20 transition-colors active" data-section="dashboard">
+                    <i data-lucide="home" class="w-5 h-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" onclick="showSection('messages')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-primary/20 transition-colors" data-section="messages">
+                    <i data-lucide="message-circle" class="w-5 h-5"></i>
+                    <span>Messages</span>
+                </a>
+                <a href="#" onclick="showSection('subscribers')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-primary/20 transition-colors" data-section="subscribers">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                    <span>Subscribers</span>
+                </a>
+                <a href="#" onclick="showSection('campaigns')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-primary/20 transition-colors" data-section="campaigns">
+                    <i data-lucide="megaphone" class="w-5 h-5"></i>
+                    <span>Campaigns</span>
+                </a>
+                <a href="#" onclick="showSection('bot-flows')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-primary/20 transition-colors" data-section="bot-flows">
+                    <i data-lucide="git-branch" class="w-5 h-5"></i>
+                    <span>Bot Flows</span>
+                </a>
+                <a href="#" onclick="showSection('pages')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-primary/20 transition-colors" data-section="pages">
+                    <i data-lucide="layout" class="w-5 h-5"></i>
+                    <span>Pages</span>
+                </a>
+                <a href="#" onclick="showSection('analytics')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-primary/20 transition-colors" data-section="analytics">
+                    <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="#" onclick="showSection('settings')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-primary/20 transition-colors" data-section="settings">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="section">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold mb-2">Dashboard Overview</h2>
+                    <p class="text-gray-400">Welcome to XeroChat Pro - Your complete messenger marketing solution</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-card-bg rounded-lg p-6 border border-border-color">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">Total Subscribers</p>
+                                <p class="text-2xl font-bold" id="totalSubscribers">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
+                                <i data-lucide="users" class="w-6 h-6 text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-card-bg rounded-lg p-6 border border-border-color">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">Total Messages</p>
+                                <p class="text-2xl font-bold" id="totalMessages">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-success/20 rounded-lg flex items-center justify-center">
+                                <i data-lucide="message-circle" class="w-6 h-6 text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-card-bg rounded-lg p-6 border border-border-color">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">Active Campaigns</p>
+                                <p class="text-2xl font-bold" id="activeCampaigns">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-secondary/20 rounded-lg flex items-center justify-center">
+                                <i data-lucide="megaphone" class="w-6 h-6 text-secondary"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-card-bg rounded-lg p-6 border border-border-color">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">Connected Pages</p>
+                                <p class="text-2xl font-bold" id="totalPages">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-warning/20 rounded-lg flex items-center justify-center">
+                                <i data-lucide="layout" class="w-6 h-6 text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-card-bg rounded-lg p-6 border border-border-color">
+                        <h3 class="text-lg font-semibold mb-4">Message Activity</h3>
+                        <canvas id="messageChart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="bg-card-bg rounded-lg p-6 border border-border-color">
+                        <h3 class="text-lg font-semibold mb-4">Subscriber Growth</h3>
+                        <canvas id="subscriberChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages Section -->
+            <div id="messages-section" class="section hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">Messages</h2>
+                    <button onclick="showSendMessageModal()" class="bg-primary hover:bg-primary-dark px-4 py-2 rounded-lg transition-colors">
+                        <i data-lucide="plus" class="w-4 h-4 inline mr-2"></i>
+                        Send Message
+                    </button>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-card-bg rounded-lg p-4 border border-border-color mb-6">
+                    <div class="flex flex-wrap gap-4">
+                        <select id="platformFilter" class="bg-dark-bg border border-border-color rounded px-3 py-2 text-sm">
+                            <option value="">All Platforms</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="instagram">Instagram</option>
+                        </select>
+                        <button onclick="loadMessages()" class="bg-primary hover:bg-primary-dark px-4 py-2 rounded-lg transition-colors">
+                            <i data-lucide="refresh-cw" class="w-4 h-4 inline mr-2"></i>
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Messages List -->
+                <div class="space-y-4" id="messagesList">
+                    <div class="text-center text-gray-400 py-8">
+                        <i data-lucide="message-circle" class="w-12 h-12 mx-auto mb-4 opacity-50"></i>
+                        <p>Loading messages...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subscribers Section -->
+            <div id="subscribers-section" class="section hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">Subscribers</h2>
+                    <button onclick="exportSubscribers()" class="bg-primary hover:bg-primary-dark px-4 py-2 rounded-lg transition-colors">
+                        <i data-lucide="download" class="w-4 h-4 inline mr-2"></i>
+                        Export
+                    </button>
+                </div>
+
+                <!-- Subscriber Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-card-bg rounded-lg p-4 border border-border-color text-center">
+                        <p class="text-2xl font-bold text-primary" id="totalSubs">0</p>
+                        <p class="text-sm text-gray-400">Total Subscribers</p>
+                    </div>
+                    <div class="bg-card-bg rounded-lg p-4 border border-border-color text-center">
+                        <p class="text-2xl font-bold text-success" id="activeSubs">0</p>
+                        <p class="text-sm text-gray-400">Active Today</p>
+                    </div>
+                    <div class="bg-card-bg rounded-lg p-4 border border-border-color text-center">
+                        <p class="text-2xl font-bold text-warning" id="newSubs">0</p>
+                        <p class="text-sm text-gray-400">New This Week</p>
+                    </div>
+                </div>
+
+                <!-- Subscribers List -->
+                <div class="bg-card-bg rounded-lg border border-border-color overflow-hidden">
+                    <div class="p-4 border-b border-border-color">
+                        <h3 class="font-semibold">All Subscribers</h3>
+                    </div>
+                    <div class="divide-y divide-border-color" id="subscribersList">
+                        <div class="text-center text-gray-400 py-8">
+                            <i data-lucide="users" class="w-12 h-12 mx-auto mb-4 opacity-50"></i>
+                            <p>Loading subscribers...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campaigns Section -->
+            <div id="campaigns-section" class="section hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">Campaigns</h2>
+                    <button onclick="showCreateCampaignModal()" class="bg-primary hover:bg-primary-dark px-4 py-2 rounded-lg transition-colors">
+                        <i data-lucide="plus" class="w-4 h-4 inline mr-2"></i>
+                        Create Campaign
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="campaignsGrid">
+                    <div class="text-center text-gray-400 py-8 col-span-full">
+                        <i data-lucide="megaphone" class="w-12 h-12 mx-auto mb-4 opacity-50"></i>
+                        <p>Loading campaigns...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bot Flows Section -->
+            <div id="bot-flows-section" class="section hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">Bot Flows</h2>
+                    <button onclick="showCreateFlowModal()" class="bg-primary hover:bg-primary-dark px-4 py-2 rounded-lg transition-colors">
+                        <i data-lucide="plus" class="w-4 h-4 inline mr-2"></i>
+                        Create Flow
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="flowsGrid">
+                    <div class="text-center text-gray-400 py-8 col-span-full">
+                        <i data-lucide="git-branch" class="w-12 h-12 mx-auto mb-4 opacity-50"></i>
+                        <p>Loading bot flows...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pages Section -->
+            <div id="pages-section" class="section hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">Connected Pages</h2>
+                    <button onclick="showAddPageModal()" class="bg-primary hover:bg-primary-dark px-4 py-2 rounded-lg transition-colors">
+                        <i data-lucide="plus" class="w-4 h-4 inline mr-2"></i>
+                        Add Page
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="pagesGrid">
+                    <div class="text-center text-gray-400 py-8 col-span-full">
+                        <i data-lucide="layout" class="w-12 h-12 mx-auto mb-4 opacity-50"></i>
+                        <p>Loading pages...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analytics-section" class="section hidden">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold">Analytics & Reports</h2>
+                    <p class="text-gray-400">Detailed insights into your messaging performance</p>
+                </div>
+
+                <!-- Analytics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-card-bg rounded-lg p-6 border border-border-color">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">Messages Sent</p>
+                                <p class="text-2xl font-bold text-primary" id="analyticsSent">0</p>
+                            </div>
+                            <i data-lucide="send" class="w-8 h-8 text-primary"></i>
+                        </div>
+                    </div>
+                    <div class="bg-card-bg rounded-lg p-6 border border-border-color">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">Messages Received</p>
+                                <p class="text-2xl font-bold text-success" id="analyticsReceived">0</p>
+                            </div>
+                            <i data-lucide="inbox" class="w-8 h-8 text-success"></i>
+                        </div>
+                    </div>
+                    <div class="bg-card-bg rounded-lg p-6 border border-border-color">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">New Subscribers</p>
+                                <p class="text-2xl font-bold text-warning" id="analyticsNewSubs">0</p>
+                            </div>
+                            <i data-lucide="user-plus" class="w-8 h-8 text-warning"></i>
+                        </div>
+                    </div>
+                    <div class="bg-card-bg rounded-lg p-6 border border-border-color">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">Engagement Rate</p>
+                                <p class="text-2xl font-bold text-secondary" id="analyticsEngagement">0%</p>
+                            </div>
+                            <i data-lucide="trending-up" class="w-8 h-8 text-secondary"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-card-bg rounded-lg p-6 border border-border-color">
+                        <h3 class="text-lg font-semibold mb-4">Message Trends</h3>
+                        <canvas id="trendsChart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="bg-card-bg rounded-lg p-6 border border-border-color">
+                        <h3 class="text-lg font-semibold mb-4">Platform Performance</h3>
+                        <canvas id="platformChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings-section" class="section hidden">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold">Settings</h2>
+                    <p class="text-gray-400">Configure your XeroChat Pro account</p>
+                </div>
+
+                <div class="max-w-2xl">
+                    <div class="bg-card-bg rounded-lg border border-border-color p-6 mb-6">
+                        <h3 class="text-lg font-semibold mb-4">API Configuration</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Facebook App ID</label>
+                                <input type="text" id="fbAppId" class="w-full bg-dark-bg border border-border-color rounded px-3 py-2" placeholder="Your Facebook App ID">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Facebook Access Token</label>
+                                <input type="password" id="fbAccessToken" class="w-full bg-dark-bg border border-border-color rounded px-3 py-2" placeholder="Your Facebook Access Token">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Instagram Access Token</label>
+                                <input type="password" id="igAccessToken" class="w-full bg-dark-bg border border-border-color rounded px-3 py-2" placeholder="Your Instagram Access Token">
+                            </div>
+                            <button onclick="saveApiSettings()" class="bg-primary hover:bg-primary-dark px-4 py-2 rounded-lg transition-colors">
+                                Save Settings
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-card-bg rounded-lg border border-border-color p-6">
+                        <h3 class="text-lg font-semibold mb-4">Webhook URLs</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Facebook Webhook URL</label>
+                                <input type="text" readonly value="http://your-domain.com/webhooks/facebook" class="w-full bg-dark-bg border border-border-color rounded px-3 py-2">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Instagram Webhook URL</label>
+                                <input type="text" readonly value="http://your-domain.com/webhooks/instagram" class="w-full bg-dark-bg border border-border-color rounded px-3 py-2">
+                            </div>
+                            <div class="text-sm text-gray-400">
+                                <p>Copy these URLs to your Facebook/Instagram app webhook settings.</p>
+                                <p>Verify Token: <code class="bg-dark-bg px-2 py-1 rounded">your_verify_token</code></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-card-bg rounded-lg p-8 w-full max-w-md mx-4">
+            <h3 class="text-xl font-bold mb-6 text-center">Welcome to XeroChat Pro</h3>
+
+            <!-- Login Form -->
+            <div id="loginForm">
+                <h4 class="text-lg font-semibold mb-4">Login</h4>
+                <div class="space-y-4">
+                    <input type="text" id="loginUsername" placeholder="Username" class="w-full bg-dark-bg border border-border-color rounded px-3 py-2">
+                    <input type="password" id="loginPassword" placeholder="Password" class="w-full bg-dark-bg border border-border-color rounded px-3 py-2">
+                    <button onclick="login()" class="w-full bg-primary hover:bg-primary-dark py-2 rounded-lg transition-colors">Login</button>
+                    <p class="text-center text-sm text-gray-400">
+                        Don't have an account?
+                        <a href="#" onclick="showRegisterForm()" class="text-primary hover:text-primary-dark">Register</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm" class="hidden">
+                <h4 class="text-lg font-semibold mb-4">Register</h4>
+                <div class="space-y-4">
+                    <input type="text" id="regUsername" placeholder="Username" class="w-full bg-dark-bg border border-border-color rounded px-3 py-2">
+                    <input type="email" id="regEmail" placeholder="Email" class="w-full bg-dark-bg border border-border-color rounded px-3 py-2">
+                    <input type="password" id="regPassword" placeholder="Password" class="w-full bg-dark-bg border border-border-color rounded px-3 py-2">
+                    <input type="text" id="regFullName" placeholder="Full Name (optional)" class="w-full bg-dark-bg border border-border-color rounded px-3 py-2">
+                    <button onclick="register()" class="w-full bg-primary hover:bg-primary-dark py-2 rounded-lg transition-colors">Register</button>
+                    <p class="text-center text-sm text-gray-400">
+                        Already have an account?
+                        <a href="#" onclick="showLoginForm()" class="text-primary hover:text-primary-dark">Login</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Send Message Modal -->
+    <div id="sendMessageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-card-bg rounded-lg p-8 w-full max-w-lg mx-4">
+            <h3 class="text-xl font-bold mb-6">Send Message</h3>
+            <div class="space-y-4">
+                <select id="messagePlatform" class="w-full bg-dark-bg border border-border-color rounded px-3 py-2">
+                    <option value="facebook">Facebook</option>
+                    <option value="instagram">Instagram</option>
+                </select>
+                <select id="messageSubscriber" class="w-full bg-dark-bg border border-border-color rounded px-3 py-2">
+                    <option value="">Select Subscriber</option>
+                </select>
+                <textarea id="messageContent" placeholder="Type your message..." class="w-full bg-dark-bg border border-border-color rounded px-3 py-2 h-32 resize-none"></textarea>
+                <div class="flex space-x-4">
+                    <button onclick="sendMessage()" class="flex-1 bg-primary hover:bg-primary-dark py-2 rounded-lg transition-colors">
+                        <i data-lucide="send" class="w-4 h-4 inline mr-2"></i>
+                        Send Message
+                    </button>
+                    <button onclick="closeModal('sendMessageModal')" class="px-6 py-2 border border-border-color rounded-lg hover:bg-dark-bg transition-colors">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let authToken = localStorage.getItem('authToken');
+
+        // API Base URL
+        const API_BASE = 'http://localhost:8000';
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+
+            if (authToken) {
+                showDashboard();
+            } else {
+                showAuthModal();
+            }
+        });
+
+        // Navigation
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
+            });
+
+            // Remove active class from nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active', 'bg-primary/20');
+            });
+
+            // Show selected section
+            document.getElementById(sectionName + '-section').classList.remove('hidden');
+
+            // Add active class to nav item
+            document.querySelector(`[data-section="${sectionName}"]`).classList.add('active', 'bg-primary/20');
+
+            // Load section data
+            loadSectionData(sectionName);
+        }
+
+        async function loadSectionData(section) {
+            switch(section) {
+                case 'dashboard':
+                    await loadDashboardStats();
+                    break;
+                case 'messages':
+                    await loadMessages();
+                    break;
+                case 'subscribers':
+                    await loadSubscribers();
+                    break;
+                case 'campaigns':
+                    await loadCampaigns();
+                    break;
+                case 'bot-flows':
+                    await loadBotFlows();
+                    break;
+                case 'pages':
+                    await loadPages();
+                    break;
+                case 'analytics':
+                    await loadAnalytics();
+                    break;
+            }
+        }
+
+        // Authentication
+        function showAuthModal() {
+            document.getElementById('authModal').classList.remove('hidden');
+        }
+
+        function hideAuthModal() {
+            document.getElementById('authModal').classList.add('hidden');
+        }
+
+        function showLoginForm() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+        }
+
+        function showRegisterForm() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.remove('hidden');
+        }
+
+        async function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    authToken = data.access_token;
+                    currentUser = data.user;
+                    localStorage.setItem('authToken', authToken);
+                    hideAuthModal();
+                    showDashboard();
+                } else {
+                    alert(data.detail || 'Login failed');
+                }
+            } catch (error) {
+                alert('Login failed: ' + error.message);
+            }
+        }
+
+        async function register() {
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const fullName = document.getElementById('regFullName').value;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password, full_name: fullName })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    authToken = data.access_token;
+                    currentUser = data.user;
+                    localStorage.setItem('authToken', authToken);
+                    hideAuthModal();
+                    showDashboard();
+                } else {
+                    alert(data.detail || 'Registration failed');
+                }
+            } catch (error) {
+                alert('Registration failed: ' + error.message);
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('authToken');
+            authToken = null;
+            currentUser = null;
+            showAuthModal();
+        }
+
+        function showDashboard() {
+            document.getElementById('userInfo').textContent = `Welcome, ${currentUser?.username || 'User'}`;
+            showSection('dashboard');
+        }
+
+        // API Helper
+        async function apiRequest(endpoint, options = {}) {
+            const defaultOptions = {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            const response = await fetch(`${API_BASE}${endpoint}`, { ...defaultOptions, ...options });
+
+            if (response.status === 401) {
+                logout();
+                return;
+            }
+
+            return response;
+        }
+
+        // Dashboard
+        async function loadDashboardStats() {
+            try {
+                const response = await apiRequest('/api/dashboard/stats');
+                const data = await response.json();
+
+                document.getElementById('totalSubscribers').textContent = data.total_subscribers;
+                document.getElementById('totalMessages').textContent = data.total_messages;
+                document.getElementById('activeCampaigns').textContent = data.active_campaigns;
+                document.getElementById('totalPages').textContent = data.total_pages;
+
+                // Initialize charts (simplified for demo)
+                initCharts();
+            } catch (error) {
+                console.error('Failed to load dashboard stats:', error);
+            }
+        }
+
+        function initCharts() {
+            // Message Chart
+            const messageCtx = document.getElementById('messageChart').getContext('2d');
+            new Chart(messageCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Messages',
+                        data: [12, 19, 3, 5, 2, 3, 9],
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#334155' } },
+                        x: { grid: { color: '#334155' } }
+                    }
+                }
+            });
+
+            // Subscriber Chart
+            const subscriberCtx = document.getElementById('subscriberChart').getContext('2d');
+            new Chart(subscriberCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [{
+                        label: 'New Subscribers',
+                        data: [10, 15, 8, 12],
+                        backgroundColor: '#10b981',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#334155' } },
+                        x: { grid: { color: '#334155' } }
+                    }
+                }
+            });
+        }
+
+        // Messages
+        async function loadMessages() {
+            try {
+                const platform = document.getElementById('platformFilter').value;
+                const params = platform ? `?platform=${platform}` : '';
+                const response = await apiRequest(`/api/messages${params}`);
+                const data = await response.json();
+
+                const messagesList = document.getElementById('messagesList');
+                messagesList.innerHTML = data.messages.map(msg => `
+                    <div class="bg-card-bg rounded-lg p-4 border border-border-color">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm font-medium">${msg.subscriber.first_name || msg.subscriber.username || 'Unknown'}</span>
+                                <span class="text-xs bg-primary/20 text-primary px-2 py-1 rounded">${msg.platform.toUpperCase()}</span>
+                                <span class="text-xs text-gray-400">${new Date(msg.created_at).toLocaleString()}</span>
+                            </div>
+                            <span class="text-xs ${msg.direction === 'inbound' ? 'text-success' : 'text-primary'}">
+                                ${msg.direction === 'inbound' ? 'Received' : 'Sent'}
+                            </span>
+                        </div>
+                        <p class="text-gray-300">${msg.content}</p>
+                    </div>
+                `).join('') || '<p class="text-center text-gray-400 py-8">No messages found</p>';
+
+                lucide.createIcons();
+            } catch (error) {
+                console.error('Failed to load messages:', error);
+            }
+        }
+
+        function showSendMessageModal() {
+            // Load subscribers for the dropdown
+            loadSubscribersForSelect();
+            document.getElementById('sendMessageModal').classList.remove('hidden');
+        }
+
+        async function loadSubscribersForSelect() {
+            try {
+                const response = await apiRequest('/api/subscribers?limit=100');
+                const data = await response.json();
+
+                const select = document.getElementById('messageSubscriber');
+                select.innerHTML = '<option value="">Select Subscriber</option>' +
+                    data.subscribers.map(sub => `
+                        <option value="${sub.id}">${sub.first_name || sub.username || sub.subscriber_id} (${sub.platform})</option>
+                    `).join('');
+            } catch (error) {
+                console.error('Failed to load subscribers:', error);
+            }
+        }
+
+        async function sendMessage() {
+            const subscriberId = document.getElementById('messageSubscriber').value;
+            const platform = document.getElementById('messagePlatform').value;
+            const content = document.getElementById('messageContent').value;
+
+            if (!subscriberId || !content) {
+                alert('Please select a subscriber and enter a message');
+                return;
+            }
+
+            try {
+                const response = await apiRequest('/api/messages/send', {
+                    method: 'POST',
+                    body: JSON.stringify({ subscriber_id: subscriberId, platform, content })
+                });
+
+                if (response.ok) {
+                    closeModal('sendMessageModal');
+                    loadMessages();
+                    alert('Message sent successfully!');
+                } else {
+                    alert('Failed to send message');
+                }
+            } catch (error) {
+                alert('Failed to send message: ' + error.message);
+            }
+        }
+
+        // Subscribers
+        async function loadSubscribers() {
+            try {
+                const response = await apiRequest('/api/subscribers');
+                const data = await response.json();
+
+                const subscribersList = document.getElementById('subscribersList');
+                subscribersList.innerHTML = data.subscribers.map(sub => `
+                    <div class="p-4 flex justify-between items-center">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
+                                <i data-lucide="user" class="w-5 h-5 text-primary"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">${sub.first_name || sub.username || 'Unknown User'}</p>
+                                <p class="text-sm text-gray-400">${sub.platform} • ${sub.subscribed_at ? new Date(sub.subscribed_at).toLocaleDateString() : 'N/A'}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs ${sub.is_active ? 'text-success' : 'text-danger'}">
+                                ${sub.is_active ? 'Active' : 'Inactive'}
+                            </span>
+                            <button onclick="sendMessageToSubscriber(${sub.id})" class="text-primary hover:text-primary-dark">
+                                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('') || '<p class="text-center text-gray-400 py-8">No subscribers found</p>';
+
+                document.getElementById('totalSubs').textContent = data.subscribers.length;
+                // Calculate active and new subscribers (simplified)
+                document.getElementById('activeSubs').textContent = data.subscribers.filter(s => s.is_active).length;
+                document.getElementById('newSubs').textContent = data.subscribers.filter(s => {
+                    const weekAgo = new Date();
+                    weekAgo.setDate(weekAgo.getDate() - 7);
+                    return new Date(s.subscribed_at) > weekAgo;
+                }).length;
+
+                lucide.createIcons();
+            } catch (error) {
+                console.error('Failed to load subscribers:', error);
+            }
+        }
+
+        // Campaigns
+        async function loadCampaigns() {
+            try {
+                const response = await apiRequest('/api/campaigns');
+                const data = await response.json();
+
+                const campaignsGrid = document.getElementById('campaignsGrid');
+                campaignsGrid.innerHTML = data.campaigns.map(campaign => `
+                    <div class="bg-card-bg rounded-lg p-6 border border-border-color">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="font-semibold">${campaign.name}</h3>
+                            <span class="text-xs bg-primary/20 text-primary px-2 py-1 rounded">${campaign.status}</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mb-4">${campaign.description || 'No description'}</p>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-400">${campaign.platform.toUpperCase()}</span>
+                            <span class="text-gray-400">${campaign.campaign_type}</span>
+                        </div>
+                    </div>
+                `).join('') || '<p class="text-center text-gray-400 py-8 col-span-full">No campaigns found</p>';
+            } catch (error) {
+                console.error('Failed to load campaigns:', error);
+            }
+        }
+
+        // Bot Flows
+        async function loadBotFlows() {
+            try {
+                const response = await apiRequest('/api/bot-flows');
+                const data = await response.json();
+
+                const flowsGrid = document.getElementById('flowsGrid');
+                flowsGrid.innerHTML = data.flows.map(flow => `
+                    <div class="bg-card-bg rounded-lg p-6 border border-border-color">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="font-semibold">${flow.name}</h3>
+                            <span class="text-xs ${flow.is_active ? 'bg-success/20 text-success' : 'bg-danger/20 text-danger'} px-2 py-1 rounded">
+                                ${flow.is_active ? 'Active' : 'Inactive'}
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-400 mb-4">${flow.description || 'No description'}</p>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-400">${flow.platform.toUpperCase()}</span>
+                            <span class="text-gray-400">${flow.flow_type}</span>
+                        </div>
+                    </div>
+                `).join('') || '<p class="text-center text-gray-400 py-8 col-span-full">No bot flows found</p>';
+            } catch (error) {
+                console.error('Failed to load bot flows:', error);
+            }
+        }
+
+        // Pages
+        async function loadPages() {
+            try {
+                const response = await apiRequest('/api/pages');
+                const data = await response.json();
+
+                const pagesGrid = document.getElementById('pagesGrid');
+                pagesGrid.innerHTML = data.pages.map(page => `
+                    <div class="bg-card-bg rounded-lg p-6 border border-border-color">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
+                                <i data-lucide="layout" class="w-6 h-6 text-primary"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">${page.page_name}</h3>
+                                <p class="text-sm text-gray-400">ID: ${page.page_id}</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs ${page.is_active ? 'text-success' : 'text-danger'}">
+                                ${page.is_active ? 'Active' : 'Inactive'}
+                            </span>
+                            <span class="text-xs text-gray-400">${new Date(page.created_at).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                `).join('') || '<p class="text-center text-gray-400 py-8 col-span-full">No pages connected</p>';
+
+                lucide.createIcons();
+            } catch (error) {
+                console.error('Failed to load pages:', error);
+            }
+        }
+
+        // Analytics
+        async function loadAnalytics() {
+            try {
+                const response = await apiRequest('/api/analytics/overview');
+                const data = await response.json();
+
+                document.getElementById('analyticsSent').textContent = data.total_messages_sent;
+                document.getElementById('analyticsReceived').textContent = data.total_messages_received;
+                document.getElementById('analyticsNewSubs').textContent = data.total_subscribers_gained;
+                document.getElementById('analyticsEngagement').textContent = data.engagement_rate + '%';
+
+                // Initialize analytics charts
+                initAnalyticsCharts();
+            } catch (error) {
+                console.error('Failed to load analytics:', error);
+            }
+        }
+
+        function initAnalyticsCharts() {
+            // Trends Chart
+            const trendsCtx = document.getElementById('trendsChart').getContext('2d');
+            new Chart(trendsCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [
+                        {
+                            label: 'Sent',
+                            data: [65, 59, 80, 81, 56, 55],
+                            borderColor: '#6366f1',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Received',
+                            data: [28, 48, 40, 19, 86, 27],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'top' }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#334155' } },
+                        x: { grid: { color: '#334155' } }
+                    }
+                }
+            });
+
+            // Platform Chart
+            const platformCtx = document.getElementById('platformChart').getContext('2d');
+            new Chart(platformCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Facebook', 'Instagram'],
+                    datasets: [{
+                        data: [60, 40],
+                        backgroundColor: ['#1877f2', '#E4405F'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+        }
+
+        // Modal helpers
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        function showCreateCampaignModal() {
+            alert('Create campaign functionality would be implemented here');
+        }
+
+        function showCreateFlowModal() {
+            alert('Create bot flow functionality would be implemented here');
+        }
+
+        function showAddPageModal() {
+            alert('Add page functionality would be implemented here');
+        }
+
+        function sendMessageToSubscriber(subscriberId) {
+            // Load subscriber details and show send message modal
+            document.getElementById('messageSubscriber').value = subscriberId;
+            showSendMessageModal();
+        }
+
+        function exportSubscribers() {
+            alert('Export functionality would be implemented here');
+        }
+
+        function saveApiSettings() {
+            alert('API settings save functionality would be implemented here');
+        }
+
+        // Auto-refresh dashboard every 30 seconds
+        setInterval(() => {
+            if (authToken && document.getElementById('dashboard-section').classList.contains('hidden') === false) {
+                loadDashboardStats();
+            }
+        }, 30000);
+    </script>
+</body>
+</html>
+
+

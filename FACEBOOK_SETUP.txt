@@ -1,0 +1,46 @@
+FACEBOOK INTEGRATION SETUP GUIDE
+================================
+
+To enable Facebook messaging in your bot, you need to add these environment variables to your .env file:
+
+# Facebook Configuration
+FACEBOOK_VERIFY_TOKEN=your_facebook_verify_token_here
+FACEBOOK_ACCESS_TOKEN=your_facebook_page_access_token_here
+FACEBOOK_PAGE_ID=your_facebook_page_id_here
+
+HOW TO GET THESE VALUES:
+========================
+
+1. FACEBOOK_VERIFY_TOKEN:
+   - Create any random string (e.g., "my_facebook_verify_token_123")
+   - This will be used to verify webhook requests from Facebook
+
+2. FACEBOOK_ACCESS_TOKEN:
+   - Go to Facebook Developers Console
+   - Create/select your Facebook App
+   - Go to Messenger > Settings
+   - Generate a Page Access Token for your Facebook Page
+
+3. FACEBOOK_PAGE_ID:
+   - In Facebook Developers Console
+   - Go to your App > Messenger > Settings
+   - Your Page ID will be shown there
+
+WEBHOOK SETUP:
+==============
+
+For Facebook webhooks, set up the webhook URL as:
+http://your-domain.com/facebook/webhook
+
+The verify token should be your FACEBOOK_VERIFY_TOKEN value.
+
+FILES CREATED:
+==============
+
+- facebook_messages.txt: Stores Facebook messages
+- facebook_replies.txt: Stores Facebook auto-reply keywords
+
+The dashboard now shows both Instagram and Facebook sections side by side!
+
+
+

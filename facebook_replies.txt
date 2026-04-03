@@ -1,0 +1,10 @@
+# Facebook auto-reply keywords and responses
+# Format: keyword|response
+hello|Hi there! Thanks for messaging us on Facebook! How can we help you today?
+help|I'd be happy to help! What do you need assistance with?
+price|Our prices vary depending on the service. Please visit our website or let me know what you're interested in!
+contact|You can reach us at contact@example.com or call us at (555) 123-4567
+bye|Goodbye! Thanks for chatting with us on Facebook. Have a great day!
+
+
+

@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatBot Pro - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-900 min-h-screen p-4 md:p-8 text-white">
+
+    <header class="mb-8 bg-gray-800 rounded-lg p-6 shadow-lg">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center space-x-6">
+                <div>
+                    <h1 class="text-3xl font-bold text-white">
+                        ChatBot Pro Dashboard
+                    </h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="https://instagram.com/yourusername" target="_blank" class="text-pink-400 hover:text-pink-300 transition-colors p-2 rounded-lg hover:bg-pink-500/20" title="Follow on Instagram">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
+                    <a href="https://facebook.com/yourusername" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors p-2 rounded-lg hover:bg-blue-500/20" title="Follow on Facebook">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="bg-gray-700 rounded-lg px-4 py-2">
+                    <span class="text-sm font-medium text-green-400 flex items-center">
+                        <div class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                        <span id="botStatus">Online</span>
+                    </span>
+                </div>
+                <button onclick="showLogin()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors text-sm font-semibold">
+                    <i data-lucide="log-in" class="w-4 h-4 inline mr-2"></i>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- COLUMN 1: Recent Messages -->
+        <div class="space-y-6">
+            <div class="bg-gray-800 rounded-lg p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-white">
+                        Recent Messages
+                        <span id="filter-indicator" class="text-sm font-normal text-gray-400 ml-2">(All)</span>
+                    </h2>
+                    <button onclick="loadAllMessages()" class="text-sm text-blue-400 hover:underline flex items-center">
+                        <i data-lucide="refresh-cw" class="w-4 h-4 mr-1"></i>
+                        Refresh
+                    </button>
+                </div>
+                <!-- Filter Buttons -->
+                <div class="flex space-x-3 mb-4 p-3 bg-gray-700 rounded-lg">
+                    <button onclick="setMessageFilter('all')" id="filter-all" class="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg text-xs font-semibold transition-colors hover:bg-blue-700 flex items-center justify-center space-x-2">
+                        <span class="text-sm">📨</span>
+                        <span>All</span>
+                    </button>
+                    <button onclick="setMessageFilter('instagram')" id="filter-instagram" class="flex-1 px-4 py-3 bg-pink-600 text-white rounded-lg text-xs font-semibold transition-colors hover:bg-pink-700 flex items-center justify-center space-x-2">
+                        <span class="text-sm">📷</span>
+                        <span>IG</span>
+                    </button>
+                    <button onclick="setMessageFilter('facebook')" id="filter-facebook" class="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg text-xs font-semibold transition-colors hover:bg-blue-700 flex items-center justify-center space-x-2">
+                        <span class="text-sm">💬</span>
+                        <span>FB</span>
+                    </button>
+                </div>
+                <div id="messagesList" class="space-y-4">
+                    <p class="text-gray-400 text-sm">Loading messages...</p>
+                </div>
+            </div>
+
+            <!-- Unified Message Box -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                        <i data-lucide="message-square" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-white">Send Message</h2>
+                </div>
+                <div class="space-y-5">
+                    <!-- Platform Selection -->
+                    <div class="space-y-4">
+                        <p class="text-sm text-gray-300 font-semibold flex items-center">
+                            <i data-lucide="target" class="w-4 h-4 mr-2 text-blue-400"></i>
+                            Send to platforms:
+                        </p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <label class="group cursor-pointer">
+                                <div class="bg-gray-700 rounded-lg p-4 border-2 border-pink-500/30 hover:border-pink-400 transition-colors">
+                                    <input type="checkbox" id="sendToInstagram" class="mb-2 w-4 h-4 text-pink-500 bg-gray-600 border-gray-500 rounded focus:ring-pink-500">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center">
+                                            <i data-lucide="camera" class="w-4 h-4 text-white"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-bold text-pink-400">Instagram</div>
+                                            <div class="text-xs text-gray-400">Direct Messages</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="group cursor-pointer">
+                                <div class="bg-gray-700 rounded-lg p-4 border-2 border-blue-500/30 hover:border-blue-400 transition-colors">
+                                    <input type="checkbox" id="sendToFacebook" class="mb-2 w-4 h-4 text-blue-500 bg-gray-600 border-gray-500 rounded focus:ring-blue-500">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                                            <i data-lucide="message-circle" class="w-4 h-4 text-white"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-bold text-blue-400">Facebook</div>
+                                            <div class="text-xs text-gray-400">Messenger</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Message Input -->
+                    <div class="space-y-4">
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-gray-300 flex items-center">
+                                <i data-lucide="user" class="w-4 h-4 mr-2 text-blue-400"></i>
+                                Recipient
+                            </label>
+                            <input type="text" id="unifiedSender" value="test_user" placeholder="Username or ID" class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-white placeholder-gray-400">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-gray-300 flex items-center">
+                                <i data-lucide="edit-3" class="w-4 h-4 mr-2 text-blue-400"></i>
+                                Message
+                            </label>
+                            <textarea id="unifiedMessage" placeholder="Type your message here..." class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-sm resize-none h-24 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-white placeholder-gray-400" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Send Button -->
+                    <div class="flex space-x-3 pt-2">
+                        <button onclick="sendUnifiedMessage()" id="sendUnifiedBtn" class="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed font-bold">
+                            <i data-lucide="send" class="w-4 h-4 mr-2"></i>
+                            <span>Send Message</span>
+                        </button>
+                        <button onclick="clearUnifiedMessage()" class="px-4 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors">
+                            <i data-lucide="x" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message Log -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h2 class="text-xl font-semibold mb-4 text-white">Message Log</h2>
+                <div id="messageLog" class="space-y-3 max-h-64 overflow-y-auto">
+                    <p class="text-gray-400 text-sm">No logs yet</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- COLUMN 2: Reply Console & Stats -->
+        <div class="space-y-6">
+            <!-- Auto-Reply Status -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-white">Auto-Reply Console</h2>
+                    <label class="relative inline-flex items-center cursor-pointer" title="Toggle auto-reply on/off">
+                        <input type="checkbox" id="autoReplyToggle" class="sr-only peer" onchange="toggleAutoReply(this.checked)">
+                        <div class="w-11 h-6 bg-gray-600 rounded-full peer peer-checked:bg-blue-600 after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
+                    </label>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <p class="text-sm text-gray-400 mb-2">Status:</p>
+                    <p class="text-lg font-semibold" id="autoReplyStatus">
+                        <span class="text-green-400">Active & Running</span>
+                    </p>
+                    <p class="text-xs text-gray-400 mt-2" id="autoReplyDescription">Bot is monitoring Instagram & Facebook messages and auto-replying based on keywords</p>
+                </div>
+            </div>
+
+            <!-- Instagram Keyword Manager -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center">
+                        <i data-lucide="hash" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-white">Instagram Keywords</h2>
+                </div>
+                <div class="space-y-3">
+                    <input type="text" id="newKeyword" placeholder="Keyword (e.g., hello)" class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white placeholder-gray-400">
+                    <textarea id="newReply" placeholder="Reply message" class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-sm h-20 resize-none text-white placeholder-gray-400"></textarea>
+                    <button onclick="addKeyword()" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center justify-center">
+                        <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
+                        Add Keyword
+                    </button>
+                </div>
+
+                <div class="mt-4 space-y-2 max-h-64 overflow-y-auto" id="keywordList">
+                    <p class="text-gray-400 text-sm">Loading keywords...</p>
+                </div>
+            </div>
+
+            <!-- Facebook Keyword Manager -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                        <i data-lucide="hash" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-white">Facebook Keywords</h2>
+                </div>
+                <div class="space-y-3">
+                    <input type="text" id="newFacebookKeyword" placeholder="Keyword (e.g., hello)" class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white placeholder-gray-400">
+                    <textarea id="newFacebookReply" placeholder="Reply message" class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-sm h-20 resize-none text-white placeholder-gray-400"></textarea>
+                    <button onclick="addFacebookKeyword()" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center justify-center">
+                        <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
+                        Add Facebook Keyword
+                    </button>
+                </div>
+
+                <div class="mt-4 space-y-2 max-h-64 overflow-y-auto" id="facebookKeywordList">
+                    <p class="text-gray-400 text-sm">Loading Facebook keywords...</p>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h2 class="text-xl font-semibold mb-4 text-white">Statistics</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gray-700 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-pink-300 text-sm font-medium">Instagram Messages</p>
+                                <p class="text-2xl font-bold text-white" id="totalMessages">0</p>
+                            </div>
+                            <div class="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center">
+                                <i data-lucide="camera" class="w-5 h-5 text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-700 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-blue-300 text-sm font-medium">Facebook Messages</p>
+                                <p class="text-2xl font-bold text-white" id="totalFacebookMessages">0</p>
+                            </div>
+                            <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                                <i data-lucide="message-circle" class="w-5 h-5 text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-700 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-green-300 text-sm font-medium">Auto Replies</p>
+                                <p class="text-2xl font-bold text-white" id="totalReplies">0</p>
+                            </div>
+                            <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center">
+                                <i data-lucide="bot" class="w-5 h-5 text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-700 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-purple-300 text-sm font-medium">Keywords</p>
+                                <p class="text-2xl font-bold text-white" id="totalKeywords">0</p>
+                            </div>
+                            <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center">
+                                <i data-lucide="hash" class="w-5 h-5 text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-700 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-cyan-300 text-sm font-medium">FB Keywords</p>
+                                <p class="text-2xl font-bold text-white" id="totalFacebookKeywords">0</p>
+                            </div>
+                            <div class="w-10 h-10 bg-cyan-600 rounded-full flex items-center justify-center">
+                                <i data-lucide="hash" class="w-5 h-5 text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-700 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-emerald-300 text-sm font-medium">System Status</p>
+                                <p class="text-lg font-bold text-green-400">Online</p>
+                            </div>
+                            <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center">
+                                <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COLUMN 3: System Info & Logs -->
+        <div class="space-y-6">
+            <!-- System Status -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h2 class="text-xl font-semibold mb-4 text-white">System Status</h2>
+
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center p-3 bg-gray-700 rounded-lg">
+                        <span class="text-sm text-gray-300">Server</span>
+                        <span class="text-sm font-semibold" id="serverStatus">
+                            <i data-lucide="loader" class="w-4 h-4 inline animate-spin"></i> Checking...
+                        </span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-gray-700 rounded-lg">
+                        <span class="text-sm text-gray-300">Webhook</span>
+                        <span class="text-sm font-semibold" id="webhookStatus">
+                            <i data-lucide="loader" class="w-4 h-4 inline animate-spin"></i> Checking...
+                        </span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-gray-700 rounded-lg">
+                        <span class="text-sm text-gray-300">Instagram API</span>
+                        <span class="text-sm font-semibold text-yellow-400" id="apiStatus">● Pending Approval</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h2 class="text-xl font-semibold mb-4 text-white">Configuration</h2>
+                <div class="space-y-3 text-sm">
+                    <div class="p-3 bg-gray-700 rounded-lg">
+                        <p class="text-gray-400">Instagram ID</p>
+                        <p class="font-mono text-xs text-blue-400" id="configInstagramId">Loading...</p>
+                    </div>
+                    <div class="p-3 bg-gray-700 rounded-lg">
+                        <p class="text-gray-400">Facebook ID</p>
+                        <p class="font-mono text-xs text-blue-400" id="configFacebookId">Loading...</p>
+                    </div>
+                    <div class="p-3 bg-gray-700 rounded-lg">
+                        <p class="text-gray-400">Instagram Webhook</p>
+                        <p class="font-mono text-xs text-blue-400 break-all">http://127.0.0.1:8000/webhook</p>
+                    </div>
+                    <div class="p-3 bg-gray-700 rounded-lg">
+                        <p class="text-gray-400">Facebook Webhook</p>
+                        <p class="font-mono text-xs text-blue-400 break-all">http://127.0.0.1:8000/facebook/webhook</p>
+                    </div>
+                    <div class="p-3 bg-gray-700 rounded-lg">
+                        <p class="text-gray-400">Auto-Reply</p>
+                        <p class="font-mono text-xs" id="configAutoReplyStatus">
+                            <span class="text-green-400">Enabled for both platforms</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Log -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h2 class="text-xl font-semibold mb-4 text-white">Activity Log</h2>
+                <div id="activityLog" class="space-y-2 max-h-64 overflow-y-auto text-xs font-mono">
+                    <p class="text-gray-400">[INFO] Dashboard loaded</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        const API_BASE = 'http://127.0.0.1:8000';
+
+        // Message filter state
+        let currentMessageFilter = 'all';
+        let allMessages = [];
+        let allFacebookMessages = [];
+
+        // Initialize with default filter
+        setTimeout(() => {
+            setMessageFilter('all');
+            loadAutoReplyStatus(); // Load auto-reply status on init
+        }, 100);
+
+        // Message filter functions
+        function setMessageFilter(filter) {
+            console.log('Setting filter to:', filter);
+            currentMessageFilter = filter;
+            console.log('Available messages - IG:', allMessages.length, 'FB:', allFacebookMessages.length);
+
+            // Update filter indicator
+            const indicator = document.getElementById('filter-indicator');
+            if (filter === 'all') {
+                indicator.textContent = '(All Messages)';
+                indicator.className = 'text-sm font-normal text-primary-blue ml-2';
+            } else if (filter === 'instagram') {
+                indicator.textContent = '(Instagram Only)';
+                indicator.className = 'text-sm font-normal text-pink-400 ml-2';
+            } else if (filter === 'facebook') {
+                indicator.textContent = '(Facebook Only)';
+                indicator.className = 'text-sm font-normal text-blue-400 ml-2';
+            }
+
+            // Update button styles
+            document.getElementById('filter-all').className = filter === 'all'
+                ? 'flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg text-xs font-semibold transition-all duration-300 hover:from-blue-500 hover:to-purple-500 hover:scale-105 shadow-lg hover:shadow-blue-500/25 active:scale-95 flex items-center justify-center space-x-2'
+                : 'flex-1 px-4 py-3 bg-gray-600 text-gray-300 rounded-lg text-xs font-semibold transition-all duration-200 hover:bg-primary-blue hover:scale-105 shadow-lg active:scale-95 flex items-center justify-center space-x-2';
+
+            document.getElementById('filter-instagram').className = filter === 'instagram'
+                ? 'flex-1 px-4 py-3 bg-gradient-to-r from-pink-600 to-rose-600 text-white rounded-lg text-xs font-semibold transition-all duration-300 hover:from-pink-500 hover:to-rose-500 hover:scale-105 shadow-lg hover:shadow-pink-500/25 active:scale-95 flex items-center justify-center space-x-2'
+                : 'flex-1 px-4 py-3 bg-gray-600 text-gray-300 rounded-lg text-xs font-semibold transition-all duration-200 hover:bg-pink-600 hover:scale-105 shadow-lg active:scale-95 flex items-center justify-center space-x-2';
+
+            document.getElementById('filter-facebook').className = filter === 'facebook'
+                ? 'flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg text-xs font-semibold transition-all duration-300 hover:from-blue-500 hover:to-cyan-500 hover:scale-105 shadow-lg hover:shadow-blue-500/25 active:scale-95 flex items-center justify-center space-x-2'
+                : 'flex-1 px-4 py-3 bg-gray-600 text-gray-300 rounded-lg text-xs font-semibold transition-all duration-200 hover:bg-blue-600 hover:scale-105 shadow-lg active:scale-95 flex items-center justify-center space-x-2';
+
+            displayFilteredMessages();
+        }
+
+        // Check bot status
+        async function checkBotStatus() {
+            try {
+                console.log('Checking bot status...');
+                const response = await fetch(`${API_BASE}/`);
+                console.log('Response status:', response.status);
+                const data = await response.json();
+                console.log('Response data:', data);
+
+                if (data.status === 'Bot is running!') {
+                    document.getElementById('botStatus').innerHTML = '<span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>Bot Online';
+                    document.getElementById('botStatus').className = 'px-3 py-1 rounded-full text-sm bg-green-500/20 text-green-400';
+                    document.getElementById('serverStatus').innerHTML = '● Online';
+                    document.getElementById('serverStatus').className = 'text-sm font-semibold text-green-400';
+                    document.getElementById('webhookStatus').innerHTML = '● Active';
+                    document.getElementById('webhookStatus').className = 'text-sm font-semibold text-green-400';
+                    addLog('[SUCCESS] Bot server is online');
+                    
+                    // Load status info
+                    const statusRes = await fetch(`${API_BASE}/api/status`);
+                    const status = await statusRes.json();
+                    document.getElementById('configInstagramId').textContent = status.instagram_id || 'Not configured';
+                    document.getElementById('configFacebookId').textContent = status.facebook_id || 'Not configured';
+                } else {
+                    throw new Error('Bot not running');
+                }
+            } catch (error) {
+                console.error('Bot status check failed:', error);
+                document.getElementById('botStatus').innerHTML = '<span class="inline-block w-2 h-2 rounded-full bg-red-500 mr-2"></span>Offline';
+                document.getElementById('botStatus').className = 'px-3 py-1 rounded-full text-sm bg-red-500/20 text-red-400';
+                document.getElementById('serverStatus').innerHTML = '● Offline';
+                document.getElementById('serverStatus').className = 'text-sm font-semibold text-red-400';
+                document.getElementById('webhookStatus').innerHTML = '● Offline';
+                document.getElementById('webhookStatus').className = 'text-sm font-semibold text-red-400';
+                addLog('[ERROR] Cannot connect to bot server. Make sure it\'s running on port 8000');
+            }
+        }
+
+        // Load all messages
+        async function loadAllMessages() {
+            try {
+                addLog('[INFO] Fetching all messages...');
+
+                // Load Instagram messages
+                const instagramResponse = await fetch(`${API_BASE}/api/messages`);
+                const instagramData = await instagramResponse.json();
+                allMessages = instagramData.messages || [];
+                console.log('Instagram messages loaded:', allMessages.length, allMessages);
+
+                // Load Facebook messages
+                const facebookResponse = await fetch(`${API_BASE}/api/facebook/messages`);
+                const facebookData = await facebookResponse.json();
+                allFacebookMessages = facebookData.messages || [];
+                console.log('Facebook messages loaded:', allFacebookMessages.length, allFacebookMessages);
+                console.log('Total messages loaded - IG:', allMessages.length, 'FB:', allFacebookMessages.length);
+
+                displayFilteredMessages();
+                addLog(`[SUCCESS] Loaded ${allMessages.length} Instagram and ${allFacebookMessages.length} Facebook messages`);
+            } catch (error) {
+                addLog('[ERROR] Failed to load messages');
+                console.error(error);
+            }
+        }
+
+        // Load messages (legacy function for backward compatibility)
+        async function loadMessages() {
+            await loadAllMessages();
+        }
+
+        // Display filtered messages
+        function displayFilteredMessages() {
+            console.log('Displaying filtered messages for filter:', currentMessageFilter);
+            let filteredMessages = [];
+
+            if (currentMessageFilter === 'all') {
+                // Combine and sort all messages by timestamp
+                filteredMessages = [
+                    ...allMessages.map(msg => ({ ...msg, platform: 'instagram' })),
+                    ...allFacebookMessages.map(msg => ({ ...msg, platform: 'facebook' }))
+                ].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                console.log('All messages combined:', filteredMessages.length);
+            } else if (currentMessageFilter === 'instagram') {
+                filteredMessages = allMessages.map(msg => ({ ...msg, platform: 'instagram' }));
+                console.log('Instagram messages:', filteredMessages.length);
+            } else if (currentMessageFilter === 'facebook') {
+                filteredMessages = allFacebookMessages.map(msg => ({ ...msg, platform: 'facebook' }));
+                console.log('Facebook messages:', filteredMessages.length);
+            }
+
+            console.log('Filtered messages to display:', filteredMessages.length);
+
+            displayMessages(filteredMessages);
+        }
+
+        // Display messages
+        function displayMessages(messages) {
+            const messagesList = document.getElementById('messagesList');
+            const messageLog = document.getElementById('messageLog');
+
+            if (messages.length === 0) {
+                const platformText = currentMessageFilter === 'all' ? '' :
+                                   currentMessageFilter === 'instagram' ? 'Instagram ' :
+                                   'Facebook ';
+                messagesList.innerHTML = `<p class="text-text-secondary text-sm">No ${platformText}messages yet. Try sending a test message!</p>`;
+                return;
+            }
+
+            // Update stats
+            if (currentMessageFilter === 'all') {
+                document.getElementById('totalMessages').textContent = allMessages.length;
+                document.getElementById('totalFacebookMessages').textContent = allFacebookMessages.length;
+            }
+
+            // Display in inbox (last 5 messages)
+            messagesList.innerHTML = messages.slice(0, 5).map(msg => {
+                const isInstagram = msg.platform === 'instagram';
+                const avatarColor = isInstagram ? 'bg-pink-600' : 'bg-blue-600';
+                const avatarIcon = isInstagram ? 'camera' : 'message-circle';
+                const replyColor = isInstagram ? 'text-green-400' : 'text-blue-400';
+                const platformLabel = isInstagram ? 'IG' : 'FB';
+
+                return `
+                    <div class="message-item relative flex items-start p-3 bg-gray-900 rounded-lg hover:bg-gray-800 transition group"
+                         data-platform="${msg.platform}"
+                         data-sender="${msg.from}"
+                         onmouseenter="showPlatformSelector(this)"
+                         onmouseleave="hidePlatformSelector(this)">
+                        <div class="w-8 h-8 rounded-full ${avatarColor} flex items-center justify-center mr-3 flex-shrink-0">
+                            <i data-lucide="${avatarIcon}" class="w-4 h-4 text-white"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center space-x-2 mb-1">
+                                <p class="font-medium truncate">${msg.from}</p>
+                                <span class="text-xs ${isInstagram ? 'text-pink-400 bg-pink-900' : 'text-blue-400 bg-blue-900'} font-bold px-2 py-1 rounded-full">
+                                    ${isInstagram ? '📷' : '💬'} ${platformLabel}
+                                </span>
+                            </div>
+                            <p class="text-sm text-text-secondary truncate mb-1">${msg.message}</p>
+                            <p class="text-xs ${replyColor} mt-1 font-medium">→ ${msg.reply}</p>
+                        </div>
+                        <span class="text-xs text-text-secondary ml-2 flex-shrink-0">${new Date(msg.timestamp).toLocaleTimeString()}</span>
+
+                        <!-- Platform Selector (slide in from right on hover) -->
+                        <div class="platform-selector absolute right-0 top-0 h-full bg-gray-800/95 backdrop-blur-sm rounded-r-lg flex items-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-full group-hover:translate-x-0 shadow-xl border-l border-gray-600/50">
+                            <div class="flex flex-col space-y-1 p-1.5">
+                                <button onclick="quickReply('${msg.from}', 'all', event)" class="flex items-center justify-center w-6 h-6 bg-primary-blue text-white text-xs rounded-md hover:bg-blue-700 transition-all duration-200 hover:scale-110" title="Reply on both platforms">
+                                    <i data-lucide="zap" class="w-3 h-3"></i>
+                                </button>
+                                <button onclick="quickReply('${msg.from}', 'instagram', event)" class="flex items-center justify-center w-6 h-6 bg-pink-600 text-white text-xs rounded-md hover:bg-pink-700 transition-all duration-200 hover:scale-110" title="Reply on Instagram">
+                                    <i data-lucide="camera" class="w-3 h-3"></i>
+                                </button>
+                                <button onclick="quickReply('${msg.from}', 'facebook', event)" class="flex items-center justify-center w-6 h-6 bg-blue-600 text-white text-xs rounded-md hover:bg-blue-700 transition-all duration-200 hover:scale-110" title="Reply on Facebook">
+                                    <i data-lucide="message-circle" class="w-3 h-3"></i>
+                                </button>
+                                <button onclick="deleteMessage('${msg.timestamp}', '${msg.platform}', event)" class="flex items-center justify-center w-6 h-6 bg-red-600 text-white text-xs rounded-md hover:bg-red-700 transition-all duration-200 hover:scale-110" title="Delete message">
+                                    <i data-lucide="trash-2" class="w-3 h-3"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Display in message log (always show all recent messages regardless of filter)
+            console.log('Updating message log with:', allMessages.length, 'IG messages and', allFacebookMessages.length, 'FB messages');
+            const allRecentMessages = [
+                ...allMessages.slice(0, 5).map(msg => ({ ...msg, platform: 'instagram' })),
+                ...allFacebookMessages.slice(0, 5).map(msg => ({ ...msg, platform: 'facebook' }))
+            ].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 10);
+            console.log('Message log will show:', allRecentMessages.length, 'total messages');
+
+            messageLog.innerHTML = allRecentMessages.map(msg => {
+                const isInstagram = msg.platform === 'instagram';
+                const platformIcon = isInstagram ? '📷' : '💬';
+                const replyColor = isInstagram ? 'text-green-400' : 'text-blue-400';
+
+                return `
+                    <div class="p-2 bg-gray-900 rounded text-xs hover:bg-gray-800 transition">
+                        <p class="font-semibold">${msg.from} ${platformIcon} • ${new Date(msg.timestamp).toLocaleString()}</p>
+                        <p class="text-text-secondary mt-1">📩 ${msg.message}</p>
+                        <p class="${replyColor} mt-1">🤖 ${msg.reply}</p>
+                    </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        // Platform selector functions
+        function showPlatformSelector(element) {
+            // Already handled with CSS hover
+        }
+
+        function hidePlatformSelector(element) {
+            // Already handled with CSS hover
+        }
+
+        // Load keywords
+        async function loadKeywords() {
+            try {
+                const response = await fetch(`${API_BASE}/api/keywords`);
+                const data = await response.json();
+                displayKeywords(data.keywords);
+                document.getElementById('totalKeywords').textContent = data.keywords.length;
+            } catch (error) {
+                addLog('[ERROR] Failed to load keywords');
+                console.error(error);
+            }
+        }
+
+        function displayKeywords(keywords) {
+            const list = document.getElementById('keywordList');
+            
+            if (keywords.length === 0) {
+                list.innerHTML = '<p class="text-text-secondary text-sm">No keywords yet. Add your first one!</p>';
+                return;
+            }
+            
+            list.innerHTML = keywords.map(kw => `
+                <div class="p-3 bg-gray-900 rounded hover:bg-gray-800 transition">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="font-semibold text-sm text-primary-blue">${kw.keyword}</span>
+                        <button onclick="deleteKeyword('${kw.keyword}')" class="text-red-400 hover:text-red-300 transition">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <p class="text-xs text-text-secondary">${kw.reply}</p>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        async function addKeyword() {
+            const keyword = document.getElementById('newKeyword').value.trim().toLowerCase();
+            const reply = document.getElementById('newReply').value.trim();
+            
+            if (!keyword || !reply) {
+                alert('Please enter both keyword and reply');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/keywords`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({keyword, reply})
+                });
+                
+                if (response.ok) {
+                    document.getElementById('newKeyword').value = '';
+                    document.getElementById('newReply').value = '';
+                    await loadKeywords();
+                    addLog(`[SUCCESS] Added keyword: ${keyword}`);
+                }
+            } catch (error) {
+                addLog(`[ERROR] Failed to add keyword`);
+                console.error(error);
+            }
+        }
+
+        async function deleteKeyword(keyword) {
+            if (!confirm(`Delete Instagram keyword "${keyword}"?`)) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/keywords/${keyword}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    await loadKeywords();
+                    addLog(`[INFO] Deleted Instagram keyword: ${keyword}`);
+                }
+            } catch (error) {
+                addLog(`[ERROR] Failed to delete Instagram keyword`);
+                console.error(error);
+            }
+        }
+
+        async function addFacebookKeyword() {
+            const keyword = document.getElementById('newFacebookKeyword').value.trim().toLowerCase();
+            const reply = document.getElementById('newFacebookReply').value.trim();
+
+            if (!keyword || !reply) {
+                alert('Please enter both Facebook keyword and reply');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/facebook/keywords`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({keyword, reply})
+                });
+
+                if (response.ok) {
+                    document.getElementById('newFacebookKeyword').value = '';
+                    document.getElementById('newFacebookReply').value = '';
+                    await loadFacebookKeywords();
+                    addLog(`[SUCCESS] Added Facebook keyword: ${keyword}`);
+                }
+            } catch (error) {
+                addLog(`[ERROR] Failed to add Facebook keyword`);
+                console.error(error);
+            }
+        }
+
+        async function deleteFacebookKeyword(keyword) {
+            if (!confirm(`Delete Facebook keyword "${keyword}"?`)) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/facebook/keywords/${keyword}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    await loadFacebookKeywords();
+                    addLog(`[INFO] Deleted Facebook keyword: ${keyword}`);
+                }
+            } catch (error) {
+                addLog(`[ERROR] Failed to delete Facebook keyword`);
+                console.error(error);
+            }
+        }
+
+        // Load Facebook keywords
+        async function loadFacebookKeywords() {
+            try {
+                const response = await fetch(`${API_BASE}/api/facebook/keywords`);
+                const data = await response.json();
+                displayFacebookKeywords(data.keywords);
+                document.getElementById('totalFacebookKeywords').textContent = data.keywords.length;
+            } catch (error) {
+                addLog('[ERROR] Failed to load Facebook keywords');
+                console.error(error);
+            }
+        }
+
+        function displayFacebookKeywords(keywords) {
+            const list = document.getElementById('facebookKeywordList');
+
+            if (keywords.length === 0) {
+                list.innerHTML = '<p class="text-text-secondary text-sm">No Facebook keywords yet. Add your first one!</p>';
+                return;
+            }
+
+            list.innerHTML = keywords.map(kw => `
+                <div class="p-3 bg-gray-900 rounded hover:bg-gray-800 transition">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="font-semibold text-sm text-blue-400">${kw.keyword}</span>
+                        <button onclick="deleteFacebookKeyword('${kw.keyword}')" class="text-red-400 hover:text-red-300 transition">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <p class="text-xs text-text-secondary">${kw.reply}</p>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // Unified message functions
+        async function sendUnifiedMessage() {
+            const sender = document.getElementById('unifiedSender').value.trim();
+            const message = document.getElementById('unifiedMessage').value.trim();
+
+            const sendToInstagram = document.getElementById('sendToInstagram').checked;
+            const sendToFacebook = document.getElementById('sendToFacebook').checked;
+
+            if (!sender || !message) {
+                alert('Please enter both recipient and message');
+                return;
+            }
+
+            if (!sendToInstagram && !sendToFacebook) {
+                alert('Please select at least one platform to send to');
+                return;
+            }
+
+            const sendBtn = document.getElementById('sendUnifiedBtn');
+            const originalHTML = sendBtn.innerHTML;
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<i data-lucide="loader" class="w-5 h-5 mr-2 animate-spin"></i><span class="font-semibold">Sending...</span>';
+
+            try {
+                let sentCount = 0;
+                const platforms = [];
+
+                if (sendToInstagram) {
+                    platforms.push('Instagram');
+                    console.log('Sending to Instagram...');
+                    const response = await fetch(`${API_BASE}/api/test-message`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({sender, message})
+                    });
+                    console.log('Instagram response:', response.ok);
+                    if (response.ok) sentCount++;
+                }
+
+                if (sendToFacebook) {
+                    platforms.push('Facebook');
+                    console.log('Sending to Facebook...');
+                    const response = await fetch(`${API_BASE}/api/facebook/test-message`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({sender, message})
+                    });
+                    console.log('Facebook response:', response.ok);
+                    if (response.ok) sentCount++;
+                }
+
+                if (sentCount > 0) {
+                    document.getElementById('unifiedMessage').value = '';
+                    addLog(`[SUCCESS] Message sent to ${platforms.join(' & ')}!`);
+                    console.log('Reloading all messages...');
+                    // Reload all messages from server to ensure filtering works correctly
+                    await loadAllMessages();
+                    console.log('Messages reloaded, current filter:', currentMessageFilter);
+                } else {
+                    addLog(`[ERROR] Failed to send message`);
+                }
+
+            } catch (error) {
+                addLog(`[ERROR] Failed to send message`);
+                console.error(error);
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = originalHTML;
+                lucide.createIcons();
+            }
+        }
+
+        function clearUnifiedMessage() {
+            document.getElementById('unifiedMessage').value = '';
+            document.getElementById('sendToInstagram').checked = true;
+            document.getElementById('sendToFacebook').checked = false;
+        }
+
+        async function quickReply(sender, platform, event) {
+            event.stopPropagation();
+
+            const message = prompt(`Enter reply message for ${sender} on ${platform}:`);
+            if (!message || !message.trim()) return;
+
+            try {
+                addLog(`[INFO] Sending quick reply to ${sender} on ${platform}`);
+
+                let sentCount = 0;
+                const platforms = [];
+
+                if (platform === 'instagram' || platform === 'all') {
+                    platforms.push('Instagram');
+                    const response = await fetch(`${API_BASE}/api/test-message`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({sender, message})
+                    });
+                    if (response.ok) sentCount++;
+                }
+
+                if (platform === 'facebook' || platform === 'all') {
+                    platforms.push('Facebook');
+                    const response = await fetch(`${API_BASE}/api/facebook/test-message`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({sender, message})
+                    });
+                    if (response.ok) sentCount++;
+                }
+
+                if (sentCount > 0) {
+                    addLog(`[SUCCESS] Quick reply sent to ${sender} on ${platform}`);
+                    // Reload all messages from server to ensure filtering works correctly
+                    await loadAllMessages();
+                } else {
+                    addLog(`[ERROR] Failed to send quick reply`);
+                }
+            } catch (error) {
+                addLog(`[ERROR] Failed to send quick reply`);
+                console.error(error);
+            }
+        }
+
+        async function deleteMessage(timestamp, platform, event) {
+            event.stopPropagation();
+
+            if (!confirm(`Are you sure you want to delete this ${platform} message?`)) {
+                return;
+            }
+
+            try {
+                addLog(`[INFO] Deleting ${platform} message...`);
+
+                const response = await fetch(`${API_BASE}/api/messages/${timestamp}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    addLog(`[SUCCESS] ${platform} message deleted`);
+                    await loadAllMessages(); // Reload all messages from server
+                } else {
+                    addLog(`[ERROR] Failed to delete message`);
+                }
+            } catch (error) {
+                addLog(`[ERROR] Failed to delete message`);
+                console.error(error);
+            }
+        }
+
+        // Load Facebook messages
+        async function loadFacebookMessages() {
+            try {
+                addLog('[INFO] Fetching Facebook messages...');
+                const response = await fetch(`${API_BASE}/api/facebook/messages`);
+                const data = await response.json();
+                displayFacebookMessages(data.messages);
+                addLog(`[SUCCESS] Loaded ${data.messages.length} Facebook messages`);
+            } catch (error) {
+                addLog('[ERROR] Failed to load Facebook messages');
+                console.error(error);
+            }
+        }
+
+        function displayFacebookMessages(messages) {
+            const messagesList = document.getElementById('facebookMessagesList');
+            const messageLog = document.getElementById('messageLog');
+
+            if (messages.length === 0) {
+                messagesList.innerHTML = '<p class="text-text-secondary text-sm">No Facebook messages yet. Try sending a test message!</p>';
+                document.getElementById('totalFacebookMessages').textContent = '0';
+                return;
+            }
+
+            // Update stats
+            document.getElementById('totalFacebookMessages').textContent = messages.length;
+
+            // Display in Facebook inbox (last 5 messages)
+            messagesList.innerHTML = messages.slice(-5).reverse().map(msg => `
+                <div class="flex items-start p-3 bg-gray-900 rounded-lg hover:bg-gray-800 transition">
+                    <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center mr-3 flex-shrink-0">
+                        <i data-lucide="message-circle" class="w-4 h-4 text-white"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-medium truncate">${msg.from}</p>
+                        <p class="text-sm text-text-secondary truncate">${msg.message}</p>
+                        <p class="text-xs text-blue-400 mt-1">→ ${msg.reply}</p>
+                    </div>
+                    <span class="text-xs text-text-secondary ml-2 flex-shrink-0">${new Date(msg.timestamp).toLocaleTimeString()}</span>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        // Send test message
+        async function sendTestMessage() {
+            const sender = document.getElementById('testSender').value.trim();
+            const message = document.getElementById('testMessage').value.trim();
+            
+            if (!sender || !message) {
+                alert('Please enter both sender and message');
+                return;
+            }
+            
+            try {
+                addLog(`[INFO] Sending Instagram test message from ${sender}`);
+                const response = await fetch(`${API_BASE}/api/test-message`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({sender, message})
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('testMessage').value = '';
+                    addLog(`[SUCCESS] Instagram test message sent! Reply: ${data.reply}`);
+                    await loadAllMessages();
+                }
+            } catch (error) {
+                addLog('[ERROR] Failed to send Instagram test message');
+                console.error(error);
+            }
+        }
+
+        // Send Facebook test message
+        async function sendFacebookTestMessage() {
+            const sender = document.getElementById('facebookTestSender').value.trim();
+            const message = document.getElementById('facebookTestMessage').value.trim();
+
+            if (!sender || !message) {
+                alert('Please enter both Facebook sender and message');
+                return;
+            }
+
+            try {
+                addLog(`[INFO] Sending Facebook test message from ${sender}`);
+                const response = await fetch(`${API_BASE}/api/facebook/test-message`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({sender, message})
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('facebookTestMessage').value = '';
+                    addLog(`[SUCCESS] Facebook test message sent! Reply: ${data.reply}`);
+                    await loadFacebookMessages();
+                }
+            } catch (error) {
+                addLog('[ERROR] Failed to send Facebook test message');
+                console.error(error);
+            }
+        }
+
+        // Add activity log entry
+        function addLog(message) {
+            const log = document.getElementById('activityLog');
+            const time = new Date().toLocaleTimeString();
+            const entry = document.createElement('p');
+            entry.className = 'text-text-secondary';
+            entry.textContent = `[${time}] ${message}`;
+            log.insertBefore(entry, log.firstChild);
+            
+            // Keep only last 50 entries
+            while (log.children.length > 50) {
+                log.removeChild(log.lastChild);
+            }
+        }
+
+        // Auto-reply toggle functions
+        async function toggleAutoReply(enabled) {
+            console.log('Toggling auto-reply to:', enabled);
+            try {
+                const response = await fetch(`${API_BASE}/api/auto-reply/toggle`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ enabled })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Auto-reply toggled successfully:', data.enabled);
+                    updateAutoReplyStatus(data.enabled);
+                    addLog(`[SUCCESS] Auto-reply ${data.enabled ? 'enabled' : 'disabled'}`);
+                } else {
+                    console.error('Failed to toggle auto-reply:', response.status);
+                    addLog('[ERROR] Failed to toggle auto-reply');
+                    // Revert the toggle
+                    document.getElementById('autoReplyToggle').checked = !enabled;
+                }
+            } catch (error) {
+                console.error('Failed to toggle auto-reply:', error);
+                addLog('[ERROR] Failed to toggle auto-reply');
+                // Revert the toggle
+                document.getElementById('autoReplyToggle').checked = !enabled;
+            }
+        }
+
+        async function loadAutoReplyStatus() {
+            try {
+                console.log('Loading auto-reply status...');
+                const response = await fetch(`${API_BASE}/api/auto-reply/status`);
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Auto-reply status loaded:', data.enabled);
+                    document.getElementById('autoReplyToggle').checked = data.enabled;
+                    updateAutoReplyStatus(data.enabled);
+                } else {
+                    console.error('Failed to load auto-reply status:', response.status);
+                }
+            } catch (error) {
+                console.error('Failed to load auto-reply status:', error);
+            }
+        }
+
+        function updateAutoReplyStatus(enabled) {
+            console.log('Updating auto-reply status:', enabled);
+            const statusElement = document.getElementById('autoReplyStatus');
+            const descriptionElement = document.getElementById('autoReplyDescription');
+            const configStatusElement = document.getElementById('configAutoReplyStatus');
+
+            if (enabled) {
+                statusElement.innerHTML = '<span class="text-green-400">Active & Running</span>';
+                descriptionElement.textContent = 'Bot is monitoring Instagram & Facebook messages and auto-replying based on keywords';
+                if (configStatusElement) {
+                    configStatusElement.innerHTML = '<span class="text-green-400">Enabled for both platforms</span>';
+                }
+            } else {
+                statusElement.innerHTML = '<span class="text-red-400">Disabled</span>';
+                descriptionElement.textContent = 'Auto-reply is currently disabled. Messages will be received but not auto-replied.';
+                if (configStatusElement) {
+                    configStatusElement.innerHTML = '<span class="text-red-400">Disabled</span>';
+                }
+            }
+        }
+
+
+        // Initialize dashboard
+        async function init() {
+            addLog('[INFO] Initializing dashboard...');
+            await checkBotStatus();
+            await loadAllMessages();
+            await loadKeywords();
+            await loadFacebookKeywords();
+
+            // Auto-refresh every 5 seconds
+            setInterval(async () => {
+                await loadAllMessages();
+            }, 5000);
+
+            addLog('[INFO] Dashboard initialized successfully');
+            lucide.createIcons();
+        }
+
+        // Login function
+        function showLogin() {
+            console.log('Login button clicked - redirecting to /login');
+            // Redirect to login page
+            window.location.href = '/login';
+        }
+
+        // Start on load
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
